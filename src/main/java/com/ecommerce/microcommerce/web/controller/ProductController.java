@@ -1,6 +1,7 @@
 package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
+import com.ecommerce.microcommerce.exceptions.ProduitGratuitException;
 import com.ecommerce.microcommerce.model.Product;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
@@ -79,6 +80,9 @@ public class ProductController {
     @PostMapping(value = "/Produits")
 
     public ResponseEntity<Void> ajouterProduit(@Valid @RequestBody Product product) {
+
+        if(product.getPrix() == 0)
+            throw new ProduitGratuitException("Attention, il n'est pas possible d'ajouter un produit dont le prix est null.");
 
         Product productAdded =  productDao.save(product);
 
