@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "f56ac87d-65d6-4fa1-b272-fe16dcb9afb1",
+		"name": "OpenClassroom-Mcommerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ajout produit gratuit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dc950d4c-02a8-44ef-844c-cf7b35d1bf44",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Test exception type\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.exception).to.eql(\"com.ecommerce.microcommerce.exceptions.ProduitGratuitException\");",
+							"});",
+							"",
+							"pm.test(\"Test exception message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql(\"Attention, il n'est pas possible d'ajouter un produit dont le prix est null.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 4,\n\t\"nom\": \"Poney en bois\",\n\t\"prix\": 0\n}"
+				},
+				"url": {
+					"raw": "localhost:9090/Produits",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Produits"
+					]
+				},
+				"description": "ajout d'un produit gratuit pour tester la validation des produits sur la base de leurs prix de vente"
+			},
+			"response": []
+		},
+		{
+			"name": "Affichage des marges des produits",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "291b2a01-2808-402e-b45d-458af3a69d1e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Test first value\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[\"Product{id=1, nom='Ordinateur portable', prix=350}\"]).to.eql(230);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:9090/AdminProduits",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"AdminProduits"
+					]
+				},
+				"description": "Requête destinée à tester l'affichage des marges de tous les produits."
+			},
+			"response": []
+		},
+		{
+			"name": "Affichage des produits triés par ordre alphabétique",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9bb10568-309c-48a3-91da-b299de5f0c0f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:9090/Produits",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Produits"
+					]
+				},
+				"description": "Requête destinée à tester le tri par ordre alphabétique des produits."
+			},
+			"response": []
+		}
+	]
+}
